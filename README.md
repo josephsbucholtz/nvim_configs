@@ -2,16 +2,6 @@
 
 A focused Neovim setup for day-to-day coding, with fast navigation, LSP-backed editing, debugging, file browsing, and a theme workflow that is easy to switch without touching config files.
 
-## Showcase
-
-| Start screen | Code editing |
-| --- | --- |
-| ![Start screen](showcase/start_screen.png) | ![Code editing](showcase/code_editing.png) |
-
-| File tree | Theme picker |
-| --- | --- |
-| ![File tree](showcase/file_tree.png) | ![Theme picker](showcase/color_theme_selection.png) |
-
 ## Highlights
 
 - Plugin management through [lazy.nvim](https://github.com/folke/lazy.nvim), bootstrapped automatically on first launch.
