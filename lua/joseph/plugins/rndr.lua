@@ -1,5 +1,5 @@
 return {
-	"JosephAlo/rndr.nvim",
+	"SalarAlo/rndr.nvim",
 	build = "make",
 	config = function()
 		require("rndr").setup({

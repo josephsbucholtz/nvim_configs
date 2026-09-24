@@ -1,4 +1,4 @@
-# Salar's Neovim Config
+# Joseph's Neovim Config
 
 A focused Neovim setup for day-to-day coding, with fast navigation, LSP-backed editing, debugging, file browsing, and a theme workflow that is easy to switch without touching config files.
 
@@ -71,9 +71,9 @@ Leader is `<Space>`.
 
 ```text
 init.lua                 Entry point
-lua/salar/core/          Options, keymaps, theme state, filetype setup
-lua/salar/plugins/       Plugin specs
-lua/salar/plugins/lsp/   LSP and Mason setup
-lua/salar/tools/         Small local helper tools
+lua/joseph/core/          Options, keymaps, theme state, filetype setup
+lua/joseph/plugins/       Plugin specs
+lua/joseph/plugins/lsp/   LSP and Mason setup
+lua/joseph/tools/         Small local helper tools
 showcase/                README screenshots
 ```
