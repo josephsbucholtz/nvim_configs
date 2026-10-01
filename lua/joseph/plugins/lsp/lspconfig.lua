@@ -143,6 +143,14 @@ return {
 		-- ============================
 		vim.lsp.config("clangd", {
 			capabilities = capabilities,
+			filetypes = {
+    				"c",
+    				"cpp",
+    				"objc",
+    				"objcpp",
+    				"cuda",
+    				"proto",
+  			},
 			cmd = {
 				"clangd",
 				"--background-index",
@@ -191,7 +199,10 @@ return {
 
 		vim.lsp.config("pyright", {
 			capabilities = capabilities,
-			filetypes = { "python" },
+			filetypes = { 
+				"python",
+				"py",
+			},
 			root_markers = {
 				"pyrightconfig.json",
 				"pyproject.toml",
