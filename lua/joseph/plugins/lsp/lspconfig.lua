@@ -138,6 +138,20 @@ return {
 				"--background-index",
 				"--clang-tidy",
 				"--query-driver=/usr/bin/c++,/usr/bin/g++",
+				"--fallback-style={"
+      			.. "BasedOnStyle: LLVM, "
+      			.. "UseTab: ForIndentation, "
+      			.. "IndentWidth: 4, "
+      			.. "TabWidth: 4, "
+      			.. "ContinuationIndentWidth: 4, "
+      			.. "AccessModifierOffset: -4, "
+      			.. "MaxEmptyLinesToKeep: 2, "
+      			.. "AllowShortFunctionsOnASingleLine: None, "
+      			.. "AllowShortBlocksOnASingleLine: Never, "
+      			.. "AllowShortIfStatementsOnASingleLine: Never, "
+      			.. "AllowShortLoopsOnASingleLine: false, "
+      			.. "SortIncludes: Never"
+      			.. "}",
 			},
 		})
 		vim.lsp.enable("clangd")
@@ -241,31 +255,6 @@ return {
 		})
 			vim.lsp.enable("lua_ls")
 
-			-- auto-format on save
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				callback = function(ev)
-					local ft = vim.bo[ev.buf].filetype
-					local cpp_like = vim.tbl_contains({ "c", "cpp", "objc", "objcpp" }, ft)
-
-					-- Typst uses typstyle (not LSP)
-					if ft == "typst" then
-						require("conform").format({ bufnr = ev.buf })
-						return
-					end
-
-					if not cpp_like then
-						return
-					end
-
-					vim.lsp.buf.format({
-						bufnr = ev.buf,
-						async = false,
-						filter = function(client)
-							return client.name == "clangd"
-						end,
-					})
-				end,
-			})
 		-- ============================
 		-- Rust
 		-- ============================
@@ -316,22 +305,6 @@ return {
 			vim.lsp.enable("hls")
 		end
 
-		-- ============================
-		-- Godot / GDScript
-		-- ============================
-		vim.lsp.config("gdscript", {
-			capabilities = capabilities,
-		})
-
-		vim.lsp.enable("gdscript")
-
-		if vim.fn.executable("gdshader-lsp") == 1 then
-			vim.lsp.config("gdshader_lsp", {
-				capabilities = capabilities,
-			})
-
-			vim.lsp.enable("gdshader_lsp")
-		end
 	end,
 
 
