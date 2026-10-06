@@ -16,6 +16,7 @@ opt.copyindent = true
 opt.preserveindent = true
 
 opt.wrap = false
+opt.scrolloff = 8
 
 opt.ignorecase = true
 opt.smartcase = true
@@ -25,6 +26,9 @@ opt.cursorline = true
 opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
+
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
 
 opt.backspace = "indent,eol,start"
 
@@ -46,3 +50,4 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+opt.updatetime = 50
