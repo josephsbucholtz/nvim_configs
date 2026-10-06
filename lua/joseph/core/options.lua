@@ -16,7 +16,7 @@ opt.copyindent = true
 opt.preserveindent = true
 
 opt.wrap = false
-opt.scrolloff = 8
+opt.scrolloff = 14
 
 opt.ignorecase = true
 opt.smartcase = true
