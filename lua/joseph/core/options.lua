@@ -16,7 +16,19 @@ opt.copyindent = true
 opt.preserveindent = true
 
 opt.wrap = false
-opt.scrolloff = 14
+
+
+vim.api.nvim_create_autocmd("CursorMoved", {
+  callback = function()
+    if vim.fn.winline() < vim.fn.winheight(0) / 2 then
+      vim.wo.scrolloff = 8 -- Top scroll offset
+    else
+      vim.wo.scrolloff = 20  -- Bottom scroll offset
+    end
+  end,
+})
+
+
 
 opt.ignorecase = true
 opt.smartcase = true

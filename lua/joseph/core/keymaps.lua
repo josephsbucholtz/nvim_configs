@@ -5,6 +5,13 @@ local keymap = vim.keymap
 keymap.set("n", "<C-u>", "<C-u>zz")
 keymap.set("n", "<C-d>", "<C-d>zz")
 keymap.set("n", "<C-s>", "<C-v>")
+vim.keymap.set("n", "G", "Gzz")
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
+
+keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
 
 -- window management
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
@@ -22,8 +29,6 @@ keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Go to next bu
 keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Go to previous buffer" })
 keymap.set("n", "<leader>x", "<cmd>bdelete<CR>", { desc = "Close current buffer" })
 keymap.set("n", "<leader>n", "<cmd>tabnew<CR>", { desc = "New tab" })
-keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 -- file explorer
 keymap.set("n", "<C-n>", "<cmd>Ex<CR>", { desc = "Open file explorer" })
