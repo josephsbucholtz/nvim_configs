@@ -157,77 +157,84 @@ return {
 		vim.lsp.enable("clangd")
 
 		-- ============================
-		-- Python
+		-- Python Configuration
 		-- ============================
 		local function get_python_path(root_dir)
-			local venv_names = { ".venv", "venv", "env" }
+    		local venv_names = { ".venv", "venv", "env" }
 
-			for _, venv_name in ipairs(venv_names) do
-				local unix_python = root_dir .. "/" .. venv_name .. "/bin/python"
-				local windows_python = root_dir .. "/" .. venv_name .. "/Scripts/python.exe"
+    		-- 1. Check local virtualenvs relative to project root
+    		if root_dir then
+        		for _, venv_name in ipairs(venv_names) do
+            		local unix_python = root_dir .. "/" .. venv_name .. "/bin/python"
+            		local windows_python = root_dir .. "/" .. venv_name .. "/Scripts/python.exe"
 
-				if vim.fn.executable(unix_python) == 1 then
-					return unix_python, venv_name
-				end
+            		if vim.fn.executable(unix_python) == 1 then
+                		return unix_python, venv_name
+            		elseif vim.fn.executable(windows_python) == 1 then
+                		return windows_python, venv_name
+            		end
+        		end
+    		end
 
-				if vim.fn.executable(windows_python) == 1 then
-					return windows_python, venv_name
-				end
-			end
+    		-- 2. Check active shell environment virtualenv
+    		if vim.env.VIRTUAL_ENV then
+        		local virtualenv_python = vim.env.VIRTUAL_ENV .. "/bin/python"
+        		if vim.fn.executable(virtualenv_python) == 1 then
+            		return virtualenv_python, nil
+        		end
+    		end
 
-			if vim.env.VIRTUAL_ENV then
-				local virtualenv_python = vim.env.VIRTUAL_ENV .. "/bin/python"
-				if vim.fn.executable(virtualenv_python) == 1 then
-					return virtualenv_python
-				end
-			end
+    		-- 3. Fallback to global path binaries
+    		local python3 = vim.fn.exepath("python3")
+    		if python3 ~= "" then return python3, nil end
 
-			local python3 = vim.fn.exepath("python3")
-			if python3 ~= "" then
-				return python3
-			end
+    		local python = vim.fn.exepath("python")
+    		if python ~= "" then return python, nil end
 
-			local python = vim.fn.exepath("python")
-			if python ~= "" then
-				return python
-			end
+    		return nil, nil
 		end
 
+		require("mason").setup()
+
 		vim.lsp.config("pyright", {
-			capabilities = capabilities,
-			filetypes = { 
-				"python",
-				"py",
-			},
-			root_markers = {
-				"pyrightconfig.json",
-				"pyproject.toml",
-				"setup.py",
-				"setup.cfg",
-				"requirements.txt",
-				"Pipfile",
-				".git",
-			},
-			before_init = function(_, config)
-				local root_dir = config.root_dir or vim.fn.getcwd()
-				local python_path, venv_name = get_python_path(root_dir)
+    		cmd = { "pyright-langserver", "--stdio" },
 
-				config.settings = config.settings or {}
-				config.settings.python = config.settings.python or {}
-				config.settings.python.analysis = config.settings.python.analysis or {}
-				config.settings.python.analysis.autoSearchPaths = true
-				config.settings.python.analysis.useLibraryCodeForTypes = true
+    		capabilities = capabilities,
+    		filetypes = { "python" },
 
-				if python_path then
-					config.settings.python.pythonPath = python_path
-				end
+    		root_markers = {
+        		"pyrightconfig.json",
+        		"pyproject.toml",
+        		"setup.py",
+        		"setup.cfg",
+        		"requirements.txt",
+        		"Pipfile",
+        		".git",
+    		},
 
-				if venv_name then
-					config.settings.python.venvPath = root_dir
-					config.settings.python.venv = venv_name
-				end
-			end,
+    		before_init = function(_, config)
+        		local root_dir = config.root_dir or vim.fn.getcwd()
+        		local python_path, venv_name = get_python_path(root_dir)
+
+        		config.settings = config.settings or {}
+        		config.settings.python = config.settings.python or {}
+        		config.settings.python.analysis =
+            	config.settings.python.analysis or {}
+
+        		config.settings.python.analysis.autoSearchPaths = true
+        		config.settings.python.analysis.useLibraryCodeForTypes = true
+
+        		if python_path then
+            		config.settings.python.pythonPath = python_path
+        		end
+
+        		if venv_name then
+            		config.settings.python.venvPath = root_dir
+            		config.settings.python.venv = venv_name
+        		end
+    		end,
 		})
+
 		vim.lsp.enable("pyright")
 
 		-- ============================
